@@ -1,0 +1,105 @@
+{% extends 'layout.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <div class="box-store">
+        <div class="row">
+          <!-- card 1 -->
+          <div class="col-md">
+            <a href="{% url 'store' %}" class="btn btn-outline-dark"
+              >&#8592; Continue Shopping</a
+            >
+            <table class="table mt-3">
+              <tr>
+                <th>
+                  <h5>Total Item : <strong>{{order.get_cart_item}}</strong></h5>
+                </th>
+                <th>
+                  <h5>
+                    Total Prize : <strong>${{order.get_cart_total}}</strong>
+                  </h5>
+                </th>
+                <td>
+                  <a
+                    style="float: right;"
+                    class="btn btn-success"
+                    href="{% url 'checkout' %}"
+                    >checkout</a
+                  >
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- card 2 -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md">
+      <div class="box-store">
+        <div class="row">
+          <div class="col-md">
+            <div class="table">
+              <table class="table">
+                <thead>
+                  <th>Image</th>
+                  <th>Item</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th>Option</th>
+                </thead>
+                {% for item in items %}
+                <tbody>
+                  <td>
+                    {% if item.product.image %}
+                    <div class="col-md-4">
+                      <img
+                        src="{{ item.product.image.url }}"
+                        style="padding: 10px;"
+                        height="150"
+                        alt=""
+                      />
+                    </div>
+                    {% else %}
+                    <div class="col-md-4">
+                      <img
+                        src="{% static 'img/shiinachan.jpg' %}"
+                        style="padding: 10px;"
+                        height="150"
+                        alt=""
+                      />
+                    </div>
+                    {% endif %}
+                  </td>
+                  <td>{{ item.product.name }}</td>
+                  <td>${{item.product.price}}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>${{ item.get_total }}</td>
+                  <td>
+                    <form
+                      action="{% url 'delete-cart' item.id %}"
+                      method="post"
+                    >
+                      {% csrf_token %}
+                      <button
+                        type="submit"
+                        onclick="return confirm('Are You Sure Want To Delete This Item ?')"
+                        class="btn btn-danger"
+                      >
+                        Delete
+                      </button>
+                    </form>
+                  </td>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

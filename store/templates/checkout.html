@@ -1,0 +1,133 @@
+{% extends 'layout.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="row mt-3">
+    <div class="col-md-3">
+      <a href="{% url 'cart' %}" class="btn btn-outline-dark"
+        >&#8592;Back To Cart</a
+      >
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <div class="box-store">
+        <form action="" method="POST">
+          <div class="form-field">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              value="{{ user.customer }}"
+              placeholder="Name"
+              readonly
+            />
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              value="{{ user.email }}"
+              placeholder="Email"
+              readonly
+            />
+          </div>
+          <hr />
+          <p>Shipping Information:</p>
+          <form action="" method="post">
+            {% csrf_token %}
+            <div id="shipping-info">
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="address"
+                  placeholder="Address"
+                />
+              </div>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="city"
+                  placeholder="City"
+                />
+              </div>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="state"
+                  placeholder="State"
+                />
+              </div>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Zip Code"
+                  name="zip-code"
+                />
+              </div>
+            </div>
+            <hr />
+            <button type="submit" class="btn btn-success btn-block">
+              Continue
+            </button>
+          </form>
+        </form>
+      </div>
+      <br />
+      <div class="box-store" id="payment-info">
+        <button type="button" class="btn btn-primary btn-block">
+          Paypal Options
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="box-store">
+        <h4>Order Summary</h4>
+        <hr />
+        {% for item in items %}
+        <div class="row">
+          <div class="col-md-4">
+            {% if item.product.image %}
+            <img
+              src="{{ item.product.image.url }}"
+              width="100%"
+              style="margin: 5px;"
+              height="100px"
+              alt=""
+            />
+            {% else %}
+            <img
+              src="{% static 'img/shiinachan.jpg' %}"
+              width="100%"
+              style="margin: 5px;"
+              height="100px"
+              alt=""
+            />
+            {% endif %}
+          </div>
+          <div class="col-md-8">
+            <div class="table">
+              <table class="table">
+                <tbody>
+                  <td>{{ item.product.name }}</td>
+                  <td>${{ item.product.price }}</td>
+                  <td>x{{ item.quantity }}</td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <hr />
+        <h6>Items : {{ order.get_cart_item }}</h6>
+        <h6>Total : ${{ order.get_cart_total }}</h6>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

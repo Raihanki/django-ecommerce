@@ -1,0 +1,32 @@
+{% extends 'layout.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="row mt-4">
+    {% for product in products %}
+    <div class="col-md-4 mt-4">
+      {% if product.image %}
+      <img
+        src="{{ product.image.url }}"
+        alt="{{ product.image.url }}"
+        class="thumbnail"
+      />
+      {% else %}
+      <img
+        src="{% static 'img/shiinachan.jpg' %}"
+        alt="default.jpg"
+        class="thumbnail"
+      />
+      {% endif %}
+      <div class="box-store">
+        <h6><strong>{{product.name}}</strong></h6>
+        <hr />
+        <a href="/{{ product.id }}" class="btn btn-outline-success">View</a>
+        <button type="submit" class="btn btn-outline-secondary">
+          Add To Cart
+        </button>
+        <h4 class="price-instore">${{product.price|floatformat:2}}</h4>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
